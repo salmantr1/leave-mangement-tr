@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 // import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { User, UserDocument } from './schemas/user.schema';
 
 @Injectable()
@@ -14,13 +15,14 @@ export class UsersService {
 
   async createAdmin() {
     const existingAdmin = await this.userModel.findOne({
-      email: 'admin@example.com',
+      email: 'admin1@example.com',
     });
     if (!existingAdmin) {
       //   const hashedPassword = await bcrypt.hash('admin123', 10);
+      const hash = await bcrypt.hash('admin124', 10);
       await this.userModel.create({
-        email: 'admin@example.com',
-        password: 'admin123',
+        email: 'admin1@example.com',
+        password: hash,
         isAdmin: true,
       });
       console.log('✅ Admin user created: admin@example.com / admin123');

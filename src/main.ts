@@ -7,7 +7,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const usersService = app.get(UsersService);
   await usersService.createAdmin();
-
+  app.enableCors();
   // Swagger
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Leave Management System')
