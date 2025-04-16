@@ -26,4 +26,26 @@ export class UsersService {
       console.log('✅ Admin user created: admin@example.com / admin123');
     }
   }
+
+  // Add below existing methods
+
+  async create(data: any) {
+    return this.userModel.create(data);
+  }
+
+  async findAll() {
+    return this.userModel.find().select('-password');
+  }
+
+  async findOne(id: string) {
+    return this.userModel.findById(id).select('-password');
+  }
+
+  async update(id: string, data: any) {
+    return this.userModel.findByIdAndUpdate(id, data, { new: true });
+  }
+
+  async remove(id: string) {
+    return this.userModel.findByIdAndDelete(id);
+  }
 }
