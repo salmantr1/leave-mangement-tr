@@ -15,6 +15,7 @@ export class AuthController {
       loginDto.email,
       loginDto.password,
     );
+    console.log('validated usersssssss', user);
     return this.authService.login(user);
   }
 }

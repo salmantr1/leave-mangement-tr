@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {
   Controller,
   Get,
@@ -9,12 +10,20 @@ import {
   UseGuards,
   Request,
   ForbiddenException,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiBearerAuth()
 @ApiTags('Employees')
@@ -61,5 +70,30 @@ export class UsersController {
   async remove(@Request() req, @Param('id') id: string) {
     if (!req.user.isAdmin) throw new ForbiddenException();
     return this.usersService.remove(id);
+  }
+
+  @ApiOperation({ summary: 'Get leave info for an employee' })
+  @UseGuards(JwtAuthGuard)
+  @Get(':id/leave-info')
+  async getLeaveInfo(@Request() req, @Param('id') id: string) {
+    if (req.user.isAdmin || req.user.userId === id) {
+      const employee = await this.usersService.findOne(id);
+      if (employee) {
+        const pendingLeaves = employee.totalLeaves - employee.availedLeaves;
+        return {
+          totalLeaves: employee.totalLeaves,
+          availedLeaves: employee.availedLeaves,
+          pendingLeaves,
+        };
+      }
+    }
+    throw new ForbiddenException();
+  }
+
+  @ApiOperation({ summary: 'Get  info for an employee' })
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  async getEmployeInfo() {
+    throw new ForbiddenException();
   }
 }
