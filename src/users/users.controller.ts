@@ -24,6 +24,11 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import {
+  AuthenticatedUser,
+  AuthenticatedUserType,
+} from './decorator/authenticated-user.decorator';
+import { retry } from 'rxjs';
 
 @ApiBearerAuth()
 @ApiTags('Employees')
@@ -87,13 +92,6 @@ export class UsersController {
         };
       }
     }
-    throw new ForbiddenException();
-  }
-
-  @ApiOperation({ summary: 'Get  info for an employee' })
-  @UseGuards(JwtAuthGuard)
-  @Get('me')
-  async getEmployeInfo() {
     throw new ForbiddenException();
   }
 }
