@@ -10,25 +10,12 @@ import {
   UseGuards,
   Request,
   ForbiddenException,
-  UseInterceptors,
-  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import {
-  ApiBearerAuth,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
-import {
-  AuthenticatedUser,
-  AuthenticatedUserType,
-} from './decorator/authenticated-user.decorator';
-import { retry } from 'rxjs';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @ApiTags('Employees')
@@ -39,6 +26,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Request() req, @Body() body: CreateUserDto) {
+    console.log('reqreqrequser', req);
     if (!req.user.isAdmin) throw new ForbiddenException();
     return this.usersService.create(body);
   }
@@ -46,6 +34,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(@Request() req) {
+    console.log('user', req);
     if (!req.user.isAdmin) throw new ForbiddenException();
     return this.usersService.findAll();
   }

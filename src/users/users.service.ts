@@ -52,9 +52,11 @@ export class UsersService {
     if (existingUser) {
       throw new ConflictException('User already exists');
     }
-    const hash = await bcrypt.hash(data.password, 10);
+    const password = data?.password || 'Tr@123456';
+    const hash = await bcrypt.hash(password, 10);
     const newUser = await this.userModel.create({
       email: data.email,
+      name: data.name,
       password: hash,
       isAdmin: data.isAdmin,
       totalLeaves: data.totalLeaves,
