@@ -35,6 +35,7 @@ export class UsersService {
       const hash = await bcrypt.hash('admin124', 10);
       await this.userModel.create({
         email: 'admin1@example.com',
+        name: 'admin',
         password: hash,
         isAdmin: true,
       });
