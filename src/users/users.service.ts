@@ -74,6 +74,7 @@ export class UsersService {
   }
 
   async update(id: string, data: any) {
+    console.log('datadatadatadata', data);
     return this.userModel.findByIdAndUpdate(id, data, { new: true });
   }
 

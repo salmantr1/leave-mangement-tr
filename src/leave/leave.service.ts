@@ -43,4 +43,8 @@ export class LeaveService {
   async findByUser(userId: string) {
     return this.leaveModel.find({ employee: userId }).sort({ date: -1 });
   }
+
+  async getLeavesByEmployee(employeeId: string): Promise<Leave[]> {
+    return this.leaveModel.find({ employee: employeeId }).exec();
+  }
 }
