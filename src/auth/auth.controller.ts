@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiTags } from '@nestjs/swagger';
 import { LoginDto } from './dto/login-dto';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -17,5 +18,11 @@ export class AuthController {
     );
     console.log('validated usersssssss', user);
     return this.authService.login(user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('logout')
+  logout() {
+    return { message: 'Logged out successfully' };
   }
 }
