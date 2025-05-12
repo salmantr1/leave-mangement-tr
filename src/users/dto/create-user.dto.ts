@@ -5,7 +5,10 @@ import {
   IsBoolean,
   IsNumber,
   IsOptional,
+  Min,
+  Max,
 } from 'class-validator';
+import { IsLessThanOrEqual } from '../validators/is-less-than-or-equal.validator';
 
 export class CreateUserDto {
   @ApiProperty()
@@ -16,22 +19,29 @@ export class CreateUserDto {
   @IsEmail()
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsString()
-  password: string;
+  @IsOptional()
+  password?: string;
 
-  @ApiProperty({ default: false })
+  @ApiProperty({ required: false, default: false })
   @IsBoolean()
   @IsOptional()
   isAdmin?: boolean;
 
-  @ApiProperty({ default: 20 })
+  @ApiProperty({ required: false, default: 20 })
   @IsNumber()
+  @Min(0)
   @IsOptional()
-  totalLeaves?: number;
+  @Max(50)
+  totalLeaves: number;
 
-  @ApiProperty({ default: 0 })
+  @ApiProperty({ required: false, default: 0 })
   @IsNumber()
   @IsOptional()
+  @IsNumber()
+  @IsLessThanOrEqual('totalLeaves', {
+    message: 'Availed leaves cannot be greater than total leaves',
+  })
   availedLeaves?: number;
 }
