@@ -47,4 +47,20 @@ export class LeaveService {
   async getLeavesByEmployee(employeeId: string): Promise<Leave[]> {
     return this.leaveModel.find({ employee: employeeId }).exec();
   }
+
+  async deleteLeaveById(leaveId: string): Promise<{ message: string }> {
+    const leave = await this.leaveModel.findById(leaveId);
+    if (!leave) {
+      throw new NotFoundException('Leave not found');
+    }
+
+    await this.leaveModel.findByIdAndDelete(leaveId);
+
+    // Decrease the availedLeaves of the associated employee
+    await this.userModel.findByIdAndUpdate(leave.employee, {
+      $inc: { availedLeaves: -1 },
+    });
+
+    return { message: 'Leave deleted successfully' };
+  }
 }

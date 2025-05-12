@@ -1,5 +1,5 @@
 // src/leave/leave.controller.ts
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Delete } from '@nestjs/common';
 import { LeaveService } from './leave.service';
 import { ApiTags, ApiOperation, ApiOkResponse } from '@nestjs/swagger';
 import { CreateMultipleLeavesDto } from './dtos/create-multiple-leaves.dto';
@@ -26,5 +26,11 @@ export class LeaveController {
   @ApiOkResponse({ type: [Leave] })
   async getLeavesByEmployee(@Param('id') id: string) {
     return this.leaveService.getLeavesByEmployee(id);
+  }
+
+  @Delete(':leaveId')
+  @ApiOperation({ summary: 'Delete a leave by its ID' })
+  async deleteLeave(@Param('leaveId') leaveId: string) {
+    return this.leaveService.deleteLeaveById(leaveId);
   }
 }
