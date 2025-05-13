@@ -8,7 +8,9 @@ import { LeaveModule } from './leave/leave.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://mongo:27017/leave-management'),
+    MongooseModule.forRoot(
+      'mongodb+srv://salman:Tr%40123456@cluster0.yez2ede.mongodb.net/leave-management?retryWrites=true&w=majority&appName=Cluster0',
+    ),
     AuthModule,
     UsersModule,
     LeaveModule,

@@ -32,18 +32,17 @@ export class UsersService {
 
   async createAdmin() {
     const existingAdmin = await this.userModel.findOne({
-      email: 'admin1@example.com',
+      email: 'abakkar@technologyrivers.com',
     });
     if (!existingAdmin) {
       //   const hashedPassword = await bcrypt.hash('admin123', 10);
-      const hash = await bcrypt.hash('admin124', 10);
+      const hash = await bcrypt.hash('Tr@123456', 10);
       await this.userModel.create({
-        email: 'admin1@example.com',
+        email: 'abakkar@technologyrivers.com',
         name: 'admin',
         password: hash,
         isAdmin: true,
       });
-      console.log('✅ Admin user created: admin@example.com / admin123');
     }
   }
 
