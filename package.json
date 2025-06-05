@@ -9,7 +9,7 @@
     "node": "18.x"
   },
   "scripts": {
-    "build": "nest build",
+    "build": "tsc && cp api/index.ts dist/api/index.js",
     "start:prod": "node dist/main.js",
     "start": "node dist/main.js",
     "start:dev": "nest start --watch",

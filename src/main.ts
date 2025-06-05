@@ -8,11 +8,11 @@ import { AppModule } from './app.module';
 import { UsersService } from './users/users.service';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
-import { CallbackHandler } from '@vercel/node';
+// Removed CallbackHandler import as it is not exported by '@vercel/node'
 
-let server: CallbackHandler;
+let server: any;
 
-async function bootstrap(): Promise<CallbackHandler> {
+async function bootstrap(): Promise<any> {
   const app = await NestFactory.create(AppModule);
   const usersService = app.get(UsersService);
   await usersService.createAdmin();
